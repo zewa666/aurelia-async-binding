@@ -26,7 +26,7 @@ export class asyncBindingBehavior {
     binding.originalupdateTarget = binding.updateTarget || (() => {});
 
     binding.updateTarget = (a) => {
-      if (typeof a.then === "function") {
+      if (a && typeof a.then === "function") {
         a.then((res: any) => binding.originalupdateTarget(options && options.property ? this.getPropByPath(res, options.property) : res));
         
         if (options && options.catch) {
