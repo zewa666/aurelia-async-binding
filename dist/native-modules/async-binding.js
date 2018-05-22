@@ -11,7 +11,7 @@ var asyncBindingBehavior = /** @class */ (function () {
         var _this = this;
         binding.originalupdateTarget = binding.updateTarget || (function () { });
         binding.updateTarget = function (a) {
-            if (typeof a.then === "function") {
+            if (a && typeof a.then === "function") {
                 a.then(function (res) { return binding.originalupdateTarget(options && options.property ? _this.getPropByPath(res, options.property) : res); });
                 if (options && options.catch) {
                     a.catch(function (res) { return typeof options.catch === "function"
