@@ -1,0 +1,38 @@
+#####
+# Circle CI
+#
+# For running docker images on circle ci, see: https://circleci.com/docs/docker
+# For circle.yml explanation, see: https://circleci.com/docs/manually
+#####
+
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/
+    docker:
+      - image: circleci/node:9-jessie-browsers
+    steps:
+      - checkout
+      - run:
+        name: Install dependencies
+        command: npm install
+  test:
+    docker:
+      - image: circleci/node:9-jessie-browsers
+    steps:
+      - checkout
+      - run:
+        name: Tests
+        command: 'npm run test-ci'
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+        requires:
+          - build
+          filters:
+            branches:
+              only: master
