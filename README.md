@@ -1,4 +1,10 @@
-# aurelia-async-binding 
+# aurelia-async-binding
+
+[![npm Version](https://img.shields.io/npm/v/aurelia-async-binding.svg)](https://www.npmjs.com/package/aurelia-async-binding)
+[![Join the chat at https://gitter.im/aurelia/discuss](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/aurelia/discuss?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![CircleCI](https://circleci.com/gh/zewa666/aurelia-async-binding.svg?style=shield)](https://circleci.com/gh/zewa666/aurelia-async-binding)
+[![Coverage Status](https://coveralls.io/repos/github/zewa666/aurelia-async-binding/badge.svg?branch=master)](https://coveralls.io/github/zewa666/aurelia-async-binding?branch=master)
+
 An Aurelia binding behavior to consume async streams and promises directly from within your templates.
 
 ## Install
