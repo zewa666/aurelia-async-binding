@@ -1,12 +1,4 @@
-#####
-# Circle CI
-#
-# For running docker images on circle ci, see: https://circleci.com/docs/docker
-# For circle.yml explanation, see: https://circleci.com/docs/manually
-#####
-
 version: 2
-
 jobs:
   build:
     working_directory: ~/
@@ -25,6 +17,7 @@ jobs:
       - run:
         name: Tests
         command: 'npm run test-ci'
+
 workflows:
   version: 2
   build_and_test:
@@ -33,6 +26,6 @@ workflows:
       - test:
         requires:
           - build
-          filters:
-            branches:
-              only: master
+        filters:
+          branches:
+            only: master
