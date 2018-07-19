@@ -6,14 +6,13 @@ jobs:
       - image: circleci/node:9-jessie-browsers
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: npm install
+      - run: npm install
   test:
     docker:
       - image: circleci/node:9-jessie-browsers
     steps:
       - checkout
+      - run: npm install
       - run:
           name: Tests
           command: 'npm run test-ci'
