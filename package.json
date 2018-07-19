@@ -1,6 +1,6 @@
 {
   "name": "aurelia-async-binding",
-  "version": "1.1.3",
+  "version": "1.2.0",
   "description": "Aurelia async bindingbehavior to consume Observables and Promises",
   "keywords": [
     "rxjs",
@@ -43,7 +43,9 @@
     ],
     "testEnvironment": "node",
     "moduleNameMapper": {
-      "aurelia-(.*)": "<rootDir>/node_modules/$1",
+      "src/index.*": "<rootDir>/src/aurelia-async-binding.ts",
+      "src/async-binding.*": "<rootDir>/src/async-binding.ts",
+      "(test\\\\unit\\\\)aurelia-(.*)": "<rootDir>/node_modules/aurelia-$2",
       "^.+\\.(css)$": "<rootDir>/test/jest-css-stub.js"
     },
     "collectCoverage": true,
@@ -62,8 +64,7 @@
       "lcov",
       "text",
       "html"
-    ],
-    "mapCoverage": true
+    ]
   },
   "repository": {
     "type": "git",
@@ -85,36 +86,31 @@
     }
   },
   "dependencies": {
-    "aurelia-binding": "^1.2.1",
-    "aurelia-dependency-injection": "^1.3.1",
-    "aurelia-event-aggregator": "^1.0.1",
-    "aurelia-framework": "^1.1.2",
-    "aurelia-loader": "^1.0.0",
-    "aurelia-logging": "^1.3.1",
-    "aurelia-metadata": "^1.0.3",
-    "aurelia-pal": "^1.3.0",
-    "aurelia-path": "^1.1.1",
-    "aurelia-task-queue": "^1.2.0",
-    "aurelia-templating": "^1.4.2",
-    "aurelia-templating-binding": "^1.3.0",
-    "rxjs": "^5.5.2"
+    "aurelia-binding": "^2.1.2",
+    "aurelia-framework": "^1.3.0",
+    "aurelia-pal": "^1.8.0"
   },
   "devDependencies": {
-    "@types/jest": "^21.1.4",
-    "@types/node": "^8.0.0",
-    "aurelia-bootstrapper": "^2.1.1",
+    "@types/jest": "^21.1.10",
+    "@types/node": "^8.10.21",
+    "aurelia-bootstrapper": "^2.3.0",
     "aurelia-loader-nodejs": "^1.0.1",
-    "aurelia-pal-browser": "^1.2.1",
+    "aurelia-pal-browser": "^1.8.0",
     "aurelia-pal-nodejs": "^1.1.0",
-    "aurelia-polyfills": "^1.2.1",
-    "aurelia-testing": "^1.0.0-beta.3.0.1",
-    "concurrently": "^3.4.0",
-    "cross-env": "^5.0.1",
+    "aurelia-polyfills": "^1.3.0",
+    "aurelia-testing": "^1.0.0-beta.4.0.0",
+    "concurrently": "^3.6.0",
+    "cross-env": "^5.2.0",
     "jest": "^21.2.1",
     "jest-css-modules": "^1.1.0",
+    "jsdom": "11.5.1",
     "rimraf": "^2.6.1",
+    "rxjs": "^6.2.2",
     "ts-jest": "^22.4.6",
-    "tslint": "^5.4.3",
-    "typescript": "^2.6.1"
+    "tslint": "^5.11.0",
+    "typescript": "^2.9.2"
+  },
+  "peerDependencies": {
+    "rxjs": "^6.2.2"
   }
 }

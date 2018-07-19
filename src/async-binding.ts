@@ -1,5 +1,5 @@
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs/Subscription";
+import { Observable, Subscription } from "rxjs";
+import { bindingBehavior } from "aurelia-framework";
 import { Binding } from "aurelia-binding";
 
 export interface AsyncAureliaBinding extends Binding {
@@ -14,6 +14,7 @@ export interface AsyncBindingBehaviorOptions {
   property: string;
 }
 
+@bindingBehavior("async")
 export class asyncBindingBehavior {
 
   getPropByPath(obj: any, keyPath: string) {
@@ -52,7 +53,6 @@ export class asyncBindingBehavior {
       else {
         binding.originalupdateTarget(a);
       }
-
     };
   }
 

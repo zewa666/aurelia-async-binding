@@ -1,5 +1,6 @@
 System.register(["aurelia-pal", "./async-binding"], function (exports_1, context_1) {
     "use strict";
+    var aurelia_pal_1;
     var __moduleName = context_1 && context_1.id;
     function configure(aurelia) {
         aurelia.globalResources([
@@ -7,7 +8,6 @@ System.register(["aurelia-pal", "./async-binding"], function (exports_1, context
         ]);
     }
     exports_1("configure", configure);
-    var aurelia_pal_1;
     var exportedNames_1 = {
         "configure": true
     };

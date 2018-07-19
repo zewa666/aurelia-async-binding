@@ -1,4 +1,4 @@
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 import { Binding } from "aurelia-binding";
 export interface AsyncAureliaBinding extends Binding {
     originalupdateTarget(value: any): void;
