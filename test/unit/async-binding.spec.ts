@@ -1,8 +1,9 @@
 import { StageComponent } from "aurelia-testing";
 import { bootstrap } from "aurelia-bootstrapper";
 import { Aurelia } from "aurelia-framework";
-import { of, interval } from "rxjs";
+import { of, interval, throwError } from "rxjs";
 import { map, take } from "rxjs/operators";
+import { doesNotThrow } from "assert";
 
 interface SPAFramework {
   label: string;
@@ -71,7 +72,33 @@ describe("the Async Binding Behavior", () => {
     }, delay * data.length + 10);
   });
 
-  fit("should call a provided completedHandler", async () => {
+  it("should allow plucking deep object properties", async () => {
+    const expectedValue = "bar";
+    const component = StageComponent
+      .withResources("mocks/async-binding-vm")
+      .inView(`<div id="test-target">
+          \${data & async: { property: 'level1.level2.foo' }}
+        </div>`
+      )
+      .boundTo({
+        data: of({
+          level1: {
+            level2: {
+              foo: expectedValue
+            }
+          }
+        })
+      });
+
+    bootstrapPlugin(component);
+
+    await component.create(bootstrap);
+
+    expect(component.element.innerHTML.trim()).toBe(expectedValue);
+    component.dispose();
+  });
+
+  it("should call a provided completedHandler", async () => {
     const completed = jest.fn();
     const component = StageComponent
       .withResources("mocks/async-binding-vm")
@@ -89,6 +116,32 @@ describe("the Async Binding Behavior", () => {
     await component.create(bootstrap);
 
     expect(completed).toHaveBeenCalled();
+    component.dispose();
+  });
+
+  it("should call a provided error handler and pass the error", async (done) => {
+    const expectedErrorMessage = "Failed on purpose";
+    const errorHandler = jest.fn((e: string) => {
+      expect(e).toBe(expectedErrorMessage);
+
+      done();
+    });
+    const component = StageComponent
+      .withResources("mocks/async-binding-vm")
+      .inView(`<div id="test-target">
+          \${frameworks & async: { error: errorHandler }}
+        </div>`
+      )
+      .boundTo({
+        frameworks: throwError(expectedErrorMessage),
+        errorHandler
+      });
+
+    bootstrapPlugin(component);
+
+    await component.create(bootstrap);
+
+    expect(errorHandler).toHaveBeenCalled();
     component.dispose();
   });
 });

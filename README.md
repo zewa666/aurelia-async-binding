@@ -48,6 +48,13 @@ export function configure(aurelia: Aurelia) {
 }
 ```
 
+## Features
+* Easily access streamed values
+* Pluck complex object properties
+* Deep-plucking to access nested complex object properties using the dot-notation
+* Register `completedHandler` for once the stream completes
+* Register `error` handlers to react on streamed errors
+
 
 ## Usage
 Once the plugin is installed and configured you can use the `async` binding behavior.
