@@ -7,16 +7,16 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Install dependencies
-        command: npm install
+          name: Install dependencies
+          command: npm install
   test:
     docker:
       - image: circleci/node:9-jessie-browsers
     steps:
       - checkout
       - run:
-        name: Tests
-        command: 'npm run test-ci'
+          name: Tests
+          command: 'npm run test-ci'
 
 workflows:
   version: 2
@@ -24,8 +24,8 @@ workflows:
     jobs:
       - build
       - test:
-        requires:
-          - build
-        filters:
-          branches:
-            only: master
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
