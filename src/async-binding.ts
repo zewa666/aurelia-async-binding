@@ -42,6 +42,13 @@ export class asyncBindingBehavior {
             : () => { binding.originalupdateTarget(options && options.property ? this.getPropByPath(options.error, options.property) : options.error); }
           : undefined;
 
+        // Immediately update the target if the Observable has a BehaviorSubject-like current value member
+        if ("value" in a) {
+          binding.originalupdateTarget((a as any).value)
+        } else if (typeof (a as any).getValue === "function") {
+          binding.originalupdateTarget((a as any).getValue())
+        }
+
         binding._subscription = a.subscribe(
           (res) => {
             binding.originalupdateTarget(options && options.property ? this.getPropByPath(res, options.property) : res);
