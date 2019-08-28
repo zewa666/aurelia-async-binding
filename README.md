@@ -14,20 +14,6 @@ Install the npm dependency via
 npm install aurelia-async-binding
 ```
 
-## Aurelia CLI Support
-If your Aurelia CLI build is based on RequireJS or SystemJS you can setup the plugin using the following dependency declaration:
-
-```json
-...
-"dependencies": [
-  {
-    "name": "aurelia-async-binding",
-    "path": "../node_modules/aurelia-async-binding/dist/amd",
-    "main": "aurelia-async-binding"
-  }
-]
-```
-
 ## Configuration
 In your `main.ts` you'll have to register the plugin which makes it globally available:
 
