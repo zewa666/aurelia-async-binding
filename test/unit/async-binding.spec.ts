@@ -1,9 +1,10 @@
-import { StageComponent } from "aurelia-testing";
+import { ComponentTester, StageComponent } from "aurelia-testing";
 import { bootstrap } from "aurelia-bootstrapper";
 import { Aurelia } from "aurelia-framework";
 import { of, interval, throwError } from "rxjs";
 import { map, take } from "rxjs/operators";
-import { doesNotThrow } from "assert";
+
+import { asyncBindingBehavior, AsyncAureliaBinding } from "../../src/async-binding";
 
 interface SPAFramework {
   label: string;
@@ -16,9 +17,9 @@ const data: SPAFramework[] = [
   { label: "React", url: "https://facebook.github.io/react/" },
 ];
 
-function bootstrapPlugin(component) {
+function bootstrapPlugin(component: ComponentTester<any>) {
   component.bootstrap((aurelia: Aurelia) => {
-    aurelia.use.standardConfiguration()
+    return aurelia.use.standardConfiguration()
       .feature("src");
   });
 }
@@ -45,8 +46,12 @@ describe("the Async Binding Behavior", () => {
     component.dispose();
   });
 
-  it("should pluck a single property from the streamed items", async (done) => {
+  it("should pluck a single property from the streamed items", async () => {
     const delay = 10;
+    const obs$ = interval(delay).pipe(
+      map((idx) => data[idx]),
+      take(data.length)
+    );
     const component = StageComponent
       .withResources("mocks/async-binding-vm")
       .inView(`<div id="test-target">
@@ -54,22 +59,16 @@ describe("the Async Binding Behavior", () => {
         </div>`
       )
       .boundTo({
-        frameworkOverTime: interval(delay).pipe(
-          map((idx) => data[idx]),
-          take(data.length)
-        )
+        frameworkOverTime: obs$
       });
 
     bootstrapPlugin(component);
 
     await component.create(bootstrap);
 
-    setTimeout(() => {
-      expect(component.element.innerHTML.trim()).toBe(data[data.length - 1].label);
-      component.dispose();
-
-      done();
-    }, delay * data.length + 10);
+    await obs$.toPromise();
+    expect(component.element.innerHTML.trim()).toBe(data[data.length - 1].label);
+    component.dispose();
   });
 
   it("should allow plucking deep object properties", async () => {
@@ -119,13 +118,9 @@ describe("the Async Binding Behavior", () => {
     component.dispose();
   });
 
-  it("should call a provided error handler and pass the error", async (done) => {
+  it("should call a provided error handler and pass the error", async () => {
     const expectedErrorMessage = "Failed on purpose";
-    const errorHandler = jest.fn((e: string) => {
-      expect(e).toBe(expectedErrorMessage);
-
-      done();
-    });
+    const errorHandler = jest.fn();
     const component = StageComponent
       .withResources("mocks/async-binding-vm")
       .inView(`<div id="test-target">
@@ -141,7 +136,22 @@ describe("the Async Binding Behavior", () => {
 
     await component.create(bootstrap);
 
-    expect(errorHandler).toHaveBeenCalled();
+    expect(errorHandler).toHaveBeenCalledWith(expectedErrorMessage);
     component.dispose();
+  });
+
+  it("should cleanup previously defined subscriptions", () => {
+    const sut = new asyncBindingBehavior();
+    const binding = {} as AsyncAureliaBinding;
+    const stream$ = of("test");
+    
+    sut.bind(binding, "", undefined);
+    binding.updateTarget?.(stream$);
+    expect(binding._subscription).toBeDefined();
+
+    const bindingSpy = jest.spyOn(binding._subscription!, "unsubscribe");
+    binding.updateTarget?.(stream$);
+
+    expect(bindingSpy).toHaveBeenCalled();
   });
 });
