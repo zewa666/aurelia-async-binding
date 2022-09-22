@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 define(["require", "exports", "rxjs", "aurelia-framework"], function (require, exports, rxjs_1, aurelia_framework_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
+    exports.asyncBindingBehavior = void 0;
     var asyncBindingBehavior = /** @class */ (function () {
         function asyncBindingBehavior() {
         }
@@ -19,6 +20,10 @@ define(["require", "exports", "rxjs", "aurelia-framework"], function (require, e
             var _this = this;
             binding.originalupdateTarget = binding.updateTarget || (function () { });
             binding.updateTarget = function (a) {
+                if (binding._subscription &&
+                    typeof binding._subscription.unsubscribe === "function") {
+                    binding._subscription.unsubscribe();
+                }
                 if (a && typeof a.then === "function") {
                     a.then(function (res) { return binding.originalupdateTarget(options && options.property ? _this.getPropByPath(res, options.property) : res); });
                     if (options && options.catch) {
@@ -51,7 +56,7 @@ define(["require", "exports", "rxjs", "aurelia-framework"], function (require, e
             }
         };
         asyncBindingBehavior = __decorate([
-            aurelia_framework_1.bindingBehavior("async")
+            (0, aurelia_framework_1.bindingBehavior)("async")
         ], asyncBindingBehavior);
         return asyncBindingBehavior;
     }());

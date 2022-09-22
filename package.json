@@ -1,6 +1,6 @@
 {
   "name": "aurelia-async-binding",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Aurelia async bindingbehavior to consume Observables and Promises",
   "keywords": [
     "rxjs",

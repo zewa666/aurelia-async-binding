@@ -18,6 +18,10 @@ var asyncBindingBehavior = /** @class */ (function () {
         var _this = this;
         binding.originalupdateTarget = binding.updateTarget || (function () { });
         binding.updateTarget = function (a) {
+            if (binding._subscription &&
+                typeof binding._subscription.unsubscribe === "function") {
+                binding._subscription.unsubscribe();
+            }
             if (a && typeof a.then === "function") {
                 a.then(function (res) { return binding.originalupdateTarget(options && options.property ? _this.getPropByPath(res, options.property) : res); });
                 if (options && options.catch) {
